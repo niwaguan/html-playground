@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>This 绑定问题</title>
+    <script>
+      function test(identifier, action) {
+        console.log("--------------------------", identifier);
+        if (action) {
+          action();
+        }
+      }
+      test("this", function () {
+        // this的错误认识：
+        // 1. 指向函数自身
+        // 2. 指向函数的作用域
+
+        function ref2Function() {
+          this.count++;
+        }
+        ref2Function.count = 0;
+        // 调用函数，试图增加count的值
+        ref2Function();
+        // 输出0。若this指向函数本身，应该输出1才对
+        console.log(ref2Function.count);
+      });
+
+      test("call stack", function () {
+        function baz() {
+          console.log("baz");
+          bar();
+        }
+        function bar() {
+          console.log("bar");
+          foo();
+        }
+        function foo() {
+          console.log("foo");
+        }
+        baz();
+      });
+
+      // 1. 默认绑定：独立的函数调用（通过函数名不加任何修饰直接调用），会将this绑定到全局对象上（非严格模式，严格模式下会绑定到undefined）.
+      // 2. 隐式绑定：函数作为对象的属性时，并且通过属性调用，函数中的this会绑定到该对象上。无论对象层级如何嵌套，this都被绑定到最外层对象
+      // 3. 显式绑定：call/apply/bind方法的显示绑定
+      // 4. new绑定
+      // 以上规则优先级从低到高
+
+      // 在全局对象上定义a，若通过this.a访问到该值，说明this绑定到了全局对象
+      var a = "window";
+      test("this - 默认绑定", function () {
+        // case 1
+        var a = 10;
+        function foo() {
+          console.log(this.a);
+          var b = 1;
+          function inner() {
+            console.log("case1 inner", this.b);
+          }
+          inner(); // 全局对象中的b没有值（隐式创建的）
+        }
+        // 通过函数名直接调用函数，使用规则1
+        foo(); // window
+        // 即使将case 1代码全部移动的全局域中测试，结果还是一样。说明该规则，无视函数的声明位置和调用位置，只看调用方式
+      });
+
+      /**
+         测试独立的函数调用中this的绑定
+        function aFunction() {
+            console.log('aFunction', this.a);
+        }
+        var a = 10;
+        // 通过函数名直接调用函数
+        aFunction();
+         */
+
+      test("this - 隐式绑定", function () {
+        // case 2
+        function foo() {
+          console.log("case2", this.a);
+        }
+        var obj = {
+          a: 100,
+          foo,
+          test: function test() {
+            console.log("obj.test", this.a);
+          },
+        };
+        obj.foo(); // 100
+        // 函数是直接声明作为对象的属性，还是先声明再赋值到函数的属性上，是没有影响的
+        obj.test(); // 100
+
+        var nested = {
+          obj,
+          a: 200,
+        };
+        // 这里obj被nested嵌套，但foo中的this还是绑定到最外层的obj上
+        nested.obj.foo(); // 100
+        nested.obj.test(); // 100
+
+        // 若将对象的函数属性，赋值给变量，通过变量调用，将会应用规则1
+        var aliasOfTest = obj.test;
+        // 实际这符合规则1中的：通过函数名不加任何修饰直接调用
+        aliasOfTest(); // window
+
+        // 将函数当做参数传入时，也会绑定到全局对象
+        function doAction(action) {
+          // 实际这符合规则1中的：通过函数名不加任何修饰直接调用
+          action();
+        }
+        doAction(obj.foo);
+
+        // 还是将函数传入作为参数
+        // setTimeout(obj.case2, 1000);
+      });
+
+      test("this - 硬绑定", function () {
+        function foo() {
+          console.log("this - 硬绑定 foo", this.a);
+        }
+        var obj = {
+          a: 2,
+        };
+        // 通过函数包装一下
+        var wrapper = function () {
+          foo.call(obj);
+        };
+        wrapper();
+        wrapper.call(window);
+
+        // 可以通过辅助函数完成这个包装过程
+        function bind(imp, thisArg) {
+          return function () {
+            imp.apply(thisArg, arguments);
+          };
+        }
+        var target = bind(foo, obj);
+        target();
+        // 这个函数在ES5中被标准化了
+        var s = foo.bind(obj);
+        s();
+        console.log("-----");
+        const o = new s();
+        console.log("o.a", o.a);
+      });
+
+      test("this - new绑定", function () {
+        // js中并不存在构造函数一说。
+        // 所有的函数都可以使用new来调用，称之为“构造调用”
+        // 当使用new来调用函数时，会发生以下动作：
+        // 1. 创建全新的对象
+        // 2. 这个对象会被执行[[原型]]链接
+        // 3. 这个对象会被帮到到函数调用的this
+        // 4. 如果函数没有返回其他对象，那么这个对象会被自动返回
+
+        function foo(a) {
+          this.a = a;
+        }
+        var bar = new foo(2);
+        console.log(bar);
+      });
+
+      test("this - priority", function () {
+        function nested() {
+          console.log(`a = ${this.a}`);
+        }
+        var obj1 = {
+          a: 2,
+          foo: nested,
+        };
+        var obj2 = {
+          a: 3,
+          foo: nested,
+        };
+        obj1.foo(); // 2
+        obj2.foo(); // 3
+
+        obj1.foo.call(obj2);
+        obj2.foo.call(obj1);
+        // 显式绑定 > 隐式绑定
+
+        function foo(arg) {
+          this.a = arg;
+        }
+        var obj1 = {
+          foo,
+        };
+        var obj2 = {};
+
+        obj1.foo(2);
+        console.log(obj1);
+
+        obj1.foo.call(obj2, 3);
+        console.log(obj2);
+
+        var obj3 = new obj1.foo(4);
+        console.log(obj1); // 2
+        console.log(obj3); // 4
+        // new绑定 > 隐式绑定
+
+        var obj1 = {};
+        var bar = foo.bind(obj1); // 经过bind处理，bar中的this绑定到obj1上
+        bar(2);
+        console.log(obj1);
+
+        var baz = new bar(3);
+        console.log(obj1); // 2
+        console.log(baz); // 3
+        // 这里使用new改变了bar中的this指向，使得obj1.a没有变成3
+        // new绑定 > 显示绑定
+      });
+
+      test("null-undefined to this", function () {
+        function foo() {
+          console.log(this.a);
+        }
+        // 将null/undefined传入call/apply/bind时，会被忽略。this会绑定到全局对象上
+        var ø = Object.create(null); // 这种创建方式不会创建Object.prototype委托
+        var empty = {}; // 这种会创建Object.prototype委托
+        foo.call(ø);
+
+        // 为了避免this被忽略，可以传入空对象Object.create(null)
+      });
+
+      test("arrow function", function () {
+        // 箭头函数根据外层作用域来决定this
+      });
+
+      test("function", function () {
+        function logs(a, ...args) {
+          console.log(a, args);
+        }
+        logs(1);
+        logs(1, 2);
+        logs(1, 2, 3);
+        logs(1, 2, 3, 4);
+      });
+    </script>
+  </head>
+
+  <body></body>
+</html>

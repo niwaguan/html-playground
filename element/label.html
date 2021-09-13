@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>label</title>
+</head>
+<body>
+    
+    <label for="inputid" id="labelid">我同意暴富！我同意暴富！我同意暴富！我同意暴富！
+        <input type="checkbox" id="inputid">
+    </label>
+</body>
+<style>
+    #inputid {
+        display: none;
+    }
+    #labelid {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        padding-left: 15px;
+        width: 100px;
+    }
+    #labelid::before {
+        display: inline-block;
+        content: " ";
+        width: 12px;
+        height: 12px;
+        border: 2px solid rebeccapurple;
+        margin-right: 5px;
+        position: absolute;
+        top: 0%;
+        transform: translate(-100%, -50%);
+    }
+</style>
+</html>

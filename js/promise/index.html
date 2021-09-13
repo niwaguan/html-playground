@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise</title>
+  </head>
+  <body></body>
+  <script>
+    function loadImageFromURL(url, toData, toBase64) {
+      return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.crossOrigin = "";
+        image.addEventListener("load", function (e) {
+          if (!toData && !toBase64) {
+            resolve({ image });
+            return;
+          }
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+          canvas.width = image.width;
+          canvas.height = image.height;
+          context.drawImage(image, 0, 0, image.width, image.height);
+          let data = null;
+          let base64 = null;
+          if (toData) {
+            data = context.getImageData(0, 0, image.width, image.height);
+          }
+          if (toBase64) {
+            base64 = canvas.toDataURL("image/png");
+          }
+          resolve({ image, data, base64 });
+        });
+        image.addEventListener("error", function (e) {
+          reject(e);
+        });
+        image.src = url;
+      });
+    }
+
+    loadImageFromURL(
+      "https://img.topgamers.cn/img_e94c7a18_1625193330186.png",
+      true,
+      true
+    )
+      .then((resp) => {
+        return Promise.resolve(resp.base64);
+      })
+      .then((base64) => {
+        console.log("base 64 is ", base64);
+      });
+  </script>
+</html>

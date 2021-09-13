@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>构造调用返回null</title>
+  </head>
+  <body></body>
+  <script>
+    // 当使用new来调用函数时，会发生以下动作：
+    // 1. 创建全新的对象
+    // 2. 这个对象会被执行[[原型]]链接
+    // 3. 这个对象会被帮到到函数调用的this
+    // 4. 如果函数没有返回其他对象，那么这个对象会被自动返回
+    function Person(name) {
+      this.name = name;
+      // 返回任何基本类型都不能覆盖默认实现
+      // 返回一个对象，可以覆盖默认返回值
+    }
+    let tom = new Person("Tom");
+    console.log(
+      `Object.getPrototypeOf(tom) === Person.prototype: ${
+        Object.getPrototypeOf(tom) === Person.prototype
+      }`
+    );
+    let jack = new Person("jack");
+    console.log(
+      `Object.getPrototypeOf(jack) === Person.prototype: ${
+        Object.getPrototypeOf(jack) === Person.prototype
+      }`
+    );
+  </script>
+</html>

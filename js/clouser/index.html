@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>闭包</title>
+    <script>
+
+        function test(identifier, action) {
+            console.log('--------------------------', identifier);
+            if (action) {
+                action();
+            }
+        }
+
+        test('闭包', function () {
+            // JS在执行一个函数时，会创建作用域对象，用来保存函数中的局部变量。
+            // 闭包可以理解为：包含了函数，以及该函数创建时所在作用域对象，的组合
+            // ref: https://stackoverflow.com/questions/111102/how-do-javascript-closures-work
+            function clouser() {
+
+                for (let i = 0; i <= 5; i++) {
+                    setTimeout(function handler() {
+                        console.log(i)
+                    }, i * 1000);
+                }
+            }
+            // clouser();
+        })
+
+
+
+        test('ES6之前的模块管理', function () {
+            var Modules = (function Manager() {
+                // 模块记录
+                var modules = {};
+                // 定义一个模块，并记录在modules中
+                function define(name /*模块名称 */, deps /*模块依赖 */, imp /*模块实现 */) {
+                    for (let i = 0; i < deps.length; ++i) {
+                        deps[i] = modules[deps[i]];
+                    }
+                    // 需要注意apply方法
+                    modules[name] = imp.apply(imp, deps)
+                }
+                // 获取模块
+                function get(name) {
+                    return modules[name]
+                }
+                return {
+                    define,
+                    get
+                }
+            })();
+
+            Modules.define('bar', [], function () {
+                function hello(who) {
+                    return "Let me introduce: " + who;
+                }
+                return { hello }
+            })
+
+            Modules.define('foo', ['bar'], function (bar) {
+                var hungry = 'hippo'
+                function awesome() {
+                    console.log(bar.hello(hungry).toUpperCase())
+                }
+                return { awesome }
+            })
+
+            var foo = Modules.get('foo')
+            foo.awesome()
+
+        })
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文字行数</title>
+</head>
+
+<body>
+    <p class="three-lins">很长的文字很长的文字很长的文字很长的文字很长的文字很长的文字很长的文字很长的文字很长的文字</p>
+    <span>很长的文字很长的文字很长的文字很长的文字很长的文字很长的文字很长的文字很长的文字很长的文字</span>
+</body>
+<style>
+    .ellipsis {
+        white-space: nowrap;
+
+        overflow: scroll;
+        text-overflow: ellipsis;
+    }
+
+    span {
+        white-space: nowrap;
+        overflow: scroll;
+        text-overflow: ellipsis;
+    }
+
+    .three-lins {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>
+
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>测试disabled</title>
+    <style>
+      input,
+      .red {
+        background-color: red;
+      }
+
+      .red:disabled {
+        color: yellow;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="red" disabled="disabled" onclick="alert('可以点击的')">
+      this is a red div
+    </div>
+    <input type="text" disabled="disabled" />
+  </body>
+</html>

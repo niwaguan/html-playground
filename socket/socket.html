@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- socket 支持库 -->
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+    <title>Socket</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+    let socket = io("https://test.csgo1000.com/duels", {
+        path: '/go/ws/',
+        transports: ["websocket"]
+    });
+    socket.emit("init_info");
+    
+    socket.on("duels_history", resp => {
+      console.log("duels_history = ", resp);
+    });
+
+    window.$socket = socket;
+</script>
+</html>

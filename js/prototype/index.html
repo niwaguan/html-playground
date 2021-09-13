@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>原型链</title>
+    <script>
+      /*
+      所有的函数默认都会拥有一个名为 `prototype` 的公有并且不可枚举的属性，它会指向另一个对象，这个对象称为该函数的原型。
+      */
+      function test(identifier, action) {
+        console.log("--------------------------", identifier);
+        if (action) {
+          action();
+        }
+      }
+      test("prototype", function () {
+        var prototype = {
+          a: 100,
+        };
+        var some = Object.create(prototype);
+        some.b = 200;
+        Object.defineProperty(some, "x", {
+          enumerable: false,
+          value: 0,
+        });
+        console.log(some);
+        // forin遍历默认会遍历原型链，只包含可枚举的属性
+        console.log("for in 遍历");
+        for (const key in some) {
+          const element = some[key];
+          console.log(`${key}: ${element}`);
+        }
+        // in 操作也同样会遍历原型链, 遍历是不管属性是否可枚举
+        console.log(`x in object: ${"x" in some}`);
+      });
+
+      test("属性的设置和屏蔽", function () {
+        // "use strict";
+        var prototype = {};
+        Object.defineProperty(prototype, "a", {
+          // value: 999,
+          // writable: false,
+          get() {
+            return 999;
+          },
+          set(value) {
+            console.log("set prototype'a", value);
+          },
+        });
+
+        var object = Object.create(prototype);
+        object.a = 100;
+        console.log(`object.a is ${object.a}`);
+      });
+
+      test("'构造函数'", function () {
+        function Foo() {}
+        console.log(
+          "Foo.prototype.constructor === Foo",
+          Foo.prototype.constructor === Foo
+        );
+        var object = new Foo();
+        console.log("object.constructor === Foo", object.constructor === Foo);
+        console.log(
+          "object.constructor === Foo.prototype.constructor",
+          object.constructor === Foo.prototype.constructor
+        );
+      });
+    </script>
+  </head>
+
+  <body></body>
+</html>

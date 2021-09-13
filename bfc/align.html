@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/comm.css">
+    <title>bfc对对齐方式的影响</title>
+    <style>
+        .normalbox {
+            background: #888;
+            border: 10px solid #EF5BE2;
+            margin: 10px;
+            padding: 10px;
+        }
+
+        .left {
+            background: #73DE80;
+            /* 绿色 */
+            opacity: 0.5;
+            border: 3px solid #F31264;
+            width: 200px;
+            height: 200px;
+            float: left;
+        }
+
+        .right {
+            /* 粉色 */
+            background: #EF5BE2;
+            opacity: 0.5;
+            border: 3px solid #F31264;
+            width: 400px;
+            min-height: 100px;
+        }
+
+        .bfc {
+            overflow: hidden;
+        }
+
+        .box {
+            background: #888;
+            margin-left: 50px;
+        }
+
+        .little {
+            background: white;
+            width: 50px;
+            height: 50px;
+            margin: 10px;
+            float: left;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="normalbox">
+        this is a normal box div;
+    </div>
+    <div class="normalbox">
+        this is a normal box div;
+    </div>
+
+    <span class="normalbox inlineclass"> this is a normal box span </span>
+    <span class="normalbox inlineclass"> this is a normal box span </span>
+
+    <div class="box bfc">
+        box并没有指定高度，将按照其内容高度撑开。
+        <div class="left">
+            由于该浮动的出现，父节点div没有创建独立的BFC，父节点高度未考虑浮动的该节点，出现高度塌陷的结果。
+
+            但是，如果父节点创建了新的BFC，在计算高度时会考虑float的元素。
+        </div>
+        <div class="right bfc">
+            right没有创建新的BFC，那么right节点及其子节点和left节点同属于一个bfc中，这些元素会相互影响。
+
+            若right定义新的的bfc，那么这个bfc中的元素不受外界的影响
+            <div class='little'></div>
+            <div class='little'></div>
+            <div class='little'></div>
+        </div>
+    </div>
+</body>
+
+</html>

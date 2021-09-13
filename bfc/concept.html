@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BFC相关概念</title>
+</head>
+<body>
+
+    <p>
+        块格式上下文是页面CSS视觉渲染的一部分，用于决定块盒子的布局及浮动相互影响范围的一个区域
+    </p>
+    <p>
+        <pre>
+        触发条件:
+        0. 根元素 - html
+        1. position: absolute/fixed
+        2. display: inline-block / table
+        3. float 元素
+        4. ovevflow !== visible
+        </pre>
+    </p>
+    <pre>
+        规则-布局影响
+        1. 属于同一个 BFC 的两个相邻 Box 垂直排列
+        2. 属于同一个 BFC 的两个相邻 Box 的 margin 会发生重叠
+        3. BFC 中子元素的 margin box 的左边， 与包含块 (BFC) border box的左边相接触 (子元素 absolute 除外)
+        4. BFC 的区域不会与 float 的元素区域重叠
+        5. 计算 BFC 的高度时，浮动子元素也参与计算
+        6. 文字层不会被浮动层覆盖，环绕于周围
+    </pre>
+</body>
+</html>

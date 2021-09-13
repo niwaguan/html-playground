@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0 viewport-fit=cover, user-scalabel=0"
+    />
+    <title>safe-area</title>
+  </head>
+  <body>
+    <div id="element" class="square"></div>
+    <button class="toggle" onclick="toggleSafe()">Toggle</button>
+    <button class="reload" onclick="location.reload()">Reload</button>
+  </body>
+  <style>
+    html,
+    body {
+      padding: 0px;
+      margin: 0px;
+      height: 100%;
+      position: relative;
+      background-color: bisque;
+      overflow: hidden;
+    }
+    .toggle {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+      font-size: 20px;
+    }
+    .reload {
+      position: absolute;
+      left: 20px;
+      bottom: 20px;
+      font-size: 20px;
+    }
+    .square {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background-color: blueviolet;
+    }
+
+    .safe {
+      top: env(safe-area-inset-top);
+      right: env(safe-area-inset-right);
+      bottom: env(safe-area-inset-bottom);
+      left: env(safe-area-inset-left);
+
+      /* padding-top: env(safe-area-inset-top);
+      padding-right: max(12px, env(safe-area-inset-right));
+      padding-bottom: env(safe-area-inset-bottom);
+      padding-left: max(12px, env(safe-area-inset-left)); */
+    }
+  </style>
+  <script>
+    var safe = false;
+    function toggleSafe() {
+      safe = !safe;
+      if (safe) {
+        document.getElementById("element").classList.add("safe");
+      } else {
+        document.getElementById("element").classList.remove("safe");
+      }
+      console.log("class list change");
+    }
+  </script>
+</html>

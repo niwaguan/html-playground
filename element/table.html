@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Table标签</title>
+    <style>
+      html {
+      font-family: sans-serif;
+    }
+
+    table {
+      /* border-collapse: collapse; */
+      /* border: 2px solid rgb(200,200,200); */
+      /* letter-spacing: 1px; */
+      /* font-size: 0.8rem; */
+    }
+
+    /* td, th {
+      border: 1px solid rgb(190,190,190);
+      padding: 10px 20px;
+    } */
+/* 
+    td {
+      text-align: center;
+    } */
+/* 
+    caption {
+      padding: 10px;
+    } */
+    </style>
+  </head>
+  <body>
+    <table border="1" align="center" cellspacing="0" cellpadding="10">
+      <colgroup>
+        <col />
+        <col />
+        <col style="background-color: bisque" />
+      </colgroup>
+      <thead>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>电话</th>
+        <th>备注</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>张三</td>
+          <td>22</td>
+          <td colspan="2">191231283</td>
+        </tr>
+        <tr>
+          <td>李四</td>
+          <td>29</td>
+          <td colspan="2">19123132432</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <td>独立单元格</td>
+    <tr>
+      <td>独立于行的单元格</td>
+    </tr>
+    <hr />
+    <h1>School timetable</h1>
+
+    <table>
+      <colgroup>
+        <col>
+        <col>
+        <col style="background-color: #97DB9A;">
+        <col style="width: 42px;">
+        <col style="background-color: #97DB9A;">
+        <col style="background-color: #dcc48e; border: 4px solid #c1437a">
+        <col style="width: 42px;">
+        <col style="width: 42px;">
+      </colgroup>
+      <th>
+        <td>&nbsp;</td>
+        <th>Mon</th>
+        <th>Tues</th>
+        <th>Wed</th>
+        <th>Thurs</th>
+        <th>Fri</th>
+        <th>Sat</th>
+        <th>Sun</th>
+      </th>
+      <tr>
+        <th>1st period</th>
+        <td>English</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>German</td>
+        <td>Dutch</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th>2nd period</th>
+        <td>English</td>
+        <td>English</td>
+        <td>&nbsp;</td>
+        <td>German</td>
+        <td>Dutch</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th>3rd period</th>
+        <td>&nbsp;</td>
+        <td>German</td>
+        <td>&nbsp;</td>
+        <td>German</td>
+        <td>Dutch</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th>4th period</th>
+        <td>&nbsp;</td>
+        <td>English</td>
+        <td>&nbsp;</td>
+        <td>English</td>
+        <td>Dutch</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </body>
+</html>

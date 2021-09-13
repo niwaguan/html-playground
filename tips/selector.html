@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选择器</title>
+</head>
+
+<body>
+    <div class="box" attr="attrvalue">
+        <p>1-1</p>
+    </div>
+    <div class="box"  attr="attrvalue1 attrvalue2">
+        <span>o my god!</span>
+        <p>2-1</p>
+        <a href=""></a>
+        <p>2-2</p>
+    </div>
+    <div class="box">
+        <p>3-1</p>
+        <p class="c32">3-2</p>
+        <span>between 3-2 and 3-3</span>
+        <p>3-3</p>
+        <div>
+            <p>3--1</p>
+            <p>3--2</p>
+            <p>3--3</p>
+        </div>
+    </div>
+</body>
+<style>
+    /* 参考 https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Selectors */
+    .box {
+        background-color: gray;
+        margin: 10px;
+        padding: 10px;
+    }
+    span {
+        font-size: 20px;
+    }
+
+    /* p:last-child {
+        background-color: red;
+    } */
+
+    .box p:nth-child(1) {
+        background-color: olivedrab;
+    }
+
+    /* 属性选择器，通过[]定义 */
+    div[attr="attrvalue"] {
+        border: 2px solid black;
+    }
+    /* 属性attr的值以空格分隔后，包含指定的就行 */
+    div[attr~="attrvalue1"] {
+        border: 2px solid purple;
+    }
+    /* c32选中的元素紧跟着的兄弟元素为 span */
+    .c32 + span {
+        background-color: indianred;
+    }
+    /* c32选中的元素后面的兄弟为p的元素，不要求紧跟，只要在后面就行 */
+    .c32 ~ p {
+        background-color: palegoldenrod;
+    }
+    /* 伪元素选择器 */
+    /* p {
+        display: block;
+    } */
+    p::first-letter {
+        font-size: 50px;
+        text-transform: uppercase;
+    }
+</style>
+
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>滚动菜单</title>
+</head>
+<body>
+    <div class="menu">
+        <span class="menu-item active">菜单1</span>
+        <span class="menu-item">菜单1</span>
+        <span class="menu-item">菜单1</span>
+        <span class="menu-item">菜单1</span>
+        <span class="menu-item">菜单1</span>
+        <span class="menu-item">菜单1</span>
+        <span class="menu-item">菜单1</span>
+    </div>
+</body>
+
+<style>
+    .menu {
+        height: 50px;
+        line-height: 50px;
+        white-space: nowrap;
+        overflow: scroll;
+    }
+    .menu-item {
+        display: inline-block;
+        width: 100px;
+        background-color: violet;
+    }
+
+    .active {
+        background-color: yellowgreen;
+    }
+</style>
+</html>

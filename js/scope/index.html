@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作用域</title>
+    <script>
+        function test(identifier, action) {
+            console.log('--------------------------', identifier);
+            if (action) {
+                action();
+            }
+        }
+
+        test('标识符提升', function () {
+            function add(a) {
+                console.log(a + b); // 输出20
+            }
+
+            var b = 10;
+            add(10);
+
+            // 以上结果是因为JavaScript对于变量声明和赋值的机制造成：
+            // 类似 var b = 10; 语句会经过2个步骤处理：
+            // 1. 真正执行代码前，在作用域中声明b变量。
+            // 2. 执行代码时，才执行 `b = 10` 赋值操作。
+
+            // 这将导致调用 add(10) 函数时，在函数内部查找b变量，查找到全局作用域的b
+        })
+
+        test('不存在的块级作用域', function () {
+            function loop() {
+                if (true) {
+                    var a = 10;
+                    const VALUE = 3;
+                    console.log('loop', a);
+                }
+                for (var i = 0; i < 1; ++i) {
+                    console.log(i)
+                }
+
+                // 这里任然可以访问到 if () { } 和 for {} 中定义的变量
+                // 改变这个行为，可以使用let声明变量，将其作用域限制在块内
+                // 同样 const 也将其声明的变量限制在作用域块内，但不可改变其值
+                a += 1;
+                i += 1;
+
+                console.log('loop', a);
+                console.log(i)
+                // console.log('VALUE =', VALUE) ReferenceError: VALUE is not defined
+            }
+            loop();
+        })
+
+
+        test('标识符提升', function () {
+            function order() {
+                a = 2;
+                var a;
+                console.log('a = ', a)
+
+                console.log('b = ', b);
+                var b = 3;
+            }
+            order();
+
+            // 变量和函数的声明，会在任何代码执行之前被处理。称之为“提升”
+            // 变量的值为 undefined
+            // 函数会优先被提升
+
+            // undefined代表了一个变量声明了，但是没有值。
+            // ReferenceError代表了一个变量不存在，没有声明
+
+        })
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
